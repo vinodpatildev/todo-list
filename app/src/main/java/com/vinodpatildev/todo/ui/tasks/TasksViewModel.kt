@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.vinodpatildev.todo.data.PreferencesManager
 import com.vinodpatildev.todo.data.SortOrder
+import com.vinodpatildev.todo.data.Task
 import com.vinodpatildev.todo.data.TaskDao
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -35,4 +36,16 @@ class TasksViewModel @ViewModelInject constructor(
         preferencesManager.updateHideCompleted(hideCompleted)
     }
     val tasks = tasksFlow.asLiveData()
+
+    fun onTaskSelected(task: Task) {
+
+    }
+
+    fun onTaskCheckedChanged(task: Task, isChecked: Boolean) {
+        viewModelScope.launch {
+            taskDao.update(task.copy(completed = isChecked))
+        }
+    }
+
+
 }
