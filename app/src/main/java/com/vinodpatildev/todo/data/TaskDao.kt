@@ -1,7 +1,6 @@
 package com.vinodpatildev.todo.data
 
 import androidx.room.*
-import com.vinodpatildev.todo.ui.tasks.SortOrder
 import kotlinx.coroutines.flow.Flow
 
 @Dao
