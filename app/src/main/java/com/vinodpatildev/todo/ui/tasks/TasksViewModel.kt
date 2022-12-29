@@ -7,6 +7,8 @@ import com.vinodpatildev.todo.data.PreferencesManager
 import com.vinodpatildev.todo.data.SortOrder
 import com.vinodpatildev.todo.data.Task
 import com.vinodpatildev.todo.data.TaskDao
+import com.vinodpatildev.todo.ui.ADD_TASK_RESULT_OK
+import com.vinodpatildev.todo.ui.EDIT_TASK_RESULT_OK
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -65,10 +67,22 @@ class TasksViewModel @ViewModelInject constructor(
         tasksEventChannel.send(TasksEvent.NavigateToAddTaskScreen)
     }
 
+    fun onAddEditResult(result: Int) {
+        when(result){
+            ADD_TASK_RESULT_OK -> showTaskAddedEditedConfirmationMessage("Task added")
+            EDIT_TASK_RESULT_OK -> showTaskAddedEditedConfirmationMessage("Task updated")
+        }
+    }
+
+    private fun showTaskAddedEditedConfirmationMessage(msg: String) = viewModelScope.launch {
+        tasksEventChannel.send(TasksEvent.ShowTaskAddedEditedMessage(msg))
+    }
+
     sealed class TasksEvent {
         object NavigateToAddTaskScreen : TasksEvent()
         data class NavigateToEditTaskScreen(val task: Task) : TasksEvent()
         data class ShowUndoDeleteTaskMessage(val task: Task) : TasksEvent()
+        data class ShowTaskAddedEditedMessage(val msg: String) : TasksEvent()
     }
 
 
